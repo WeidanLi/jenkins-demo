@@ -1,0 +1,19 @@
+﻿﻿spring:
+  application:
+    name: microservice-discovery-eureka-ha
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+  instance:
+    hostname: spring-cloud-eureka
+server:
+  port: 8000
+security:
+  basic:
+    enabled: true
+  user:
+    name: admin0
+    password: admin0123
