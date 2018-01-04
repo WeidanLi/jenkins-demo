@@ -3,6 +3,8 @@
 2. git
 3. maven的管理项目之间的关系
 
+---
+
 该项目演示通过gitlab、Jenkins、maven、docker实现自动部署。
 
 具体步骤如下：
@@ -12,12 +14,16 @@
 
 因为是在我自己的电脑上启动相对应的虚拟机进行实现，所以可以说一切从零开始搭建。观看教程的你如果中间哪一步企业已经构建完了，可以利用现有的环境进行稍加配置实现CI自动化部署。
 
+---
+
 机器分布：
 
 |编号|机器名称|IP|作用|
 |----|-----|----|-----|
 |1|Gitlab-server|192.168.1.50|用于存放Gitlab服务|
 |2|Jenkins-server|192.168.1.53|用于存放Jenkins服务, Docker-registry服务|
+
+---
 
 ## 一. 安装Gitlab环境
 
@@ -66,6 +72,8 @@ push到刚刚在gitlab上创建的空项目地址。
 
 到了这一步基本上Gitlab的使用以及安装是已经成功的了。
 
+---
+
 ## 二. 安装Docker私仓
 
 搭建Docker私有仓库：
@@ -100,6 +108,8 @@ a6490c0c5308: Pushed
 latest: digest: sha256:a16a543b7301450be675f57b2d1d43d5789b2e0b01c7870abfff4e9b0803a3e8 size: 1364
 ```
 
+---
+
 ## 三. 安装Jenkins环境
 
 [本来想使用Docker进行安装，但是需要关联的东西太多了，所以就使用宿主机安装的方式]
@@ -122,6 +132,8 @@ firewall-cmd --reload
 
 ![](./docs/imgs/Jenkins-install1.png)
 
+---
+
 ### 3.1 配置常用项目
 
 #### 3.1.1 安装需要的插件
@@ -142,6 +154,8 @@ firewall-cmd --reload
 ![](./docs/imgs/Jenkins-install3.png)
 
 拉到下面的maven设置同理，这里就不上截图了，我是用我自己的maven，然后设置了私服等等（私服我觉得很有必要，比如存储公司自己开发的框架包等等）
+
+---
 
 ### 3.2 配置parent项目
 
@@ -165,6 +179,8 @@ firewall-cmd --reload
 1. 从Git服务器拉取代码，使用Maven插件构建并且将构建完的镜像上传到Docker私服上去；
 2. 连接生产服务器，备份、清理旧版本的程序镜像，拉取刚刚构建完成的镜像并且启动；
 3. 配置Gitlab的webhook，以便让其接收到了更新以后通知Jenkins执行以上动作。
+
+---
 
 这三步得一步一步来：
 
@@ -216,6 +232,8 @@ ADD target/${JAR_FILE} /usr/share/myservice/myservice.jar
 
 在自己电脑上准备好`192.168.1.53:5000/java8`这个根镜像，运行`mvn package`看是否构建成功。
 
+---
+
 ##### 配置Jenkins构建任务
 
 Git地址配置同上面父级pom构建。
@@ -261,6 +279,8 @@ Finished: SUCCESS
 ![](./docs/imgs/build-eureka-success.png)
 
 OK，可以进入下一步操作，控制Linux生产机器，进行操作。
+
+---
 
 #### 3.3.2 连接生产服务器，备份、清理旧版本的程序镜像，拉取刚刚构建完成的镜像并且启动；
 
@@ -322,6 +342,8 @@ docker run -d -p 8000:8000 192.168.1.53:5000/${1}
 
 然后立即构建当前任务，查看console情况。发现构建成功，这时候可以上生产机子上看docker进程。
 
+---
+
 #### 3.3.2 配置连接gitlab和jenkins
 
 终于剩下最后一步了，就是连接Gitlab和Jenkins，以便能够让Gitlab收到更新就通知Jenkins执行刚刚上面的步骤
@@ -339,6 +361,8 @@ Gitlab提供测试按钮：测试，在网页的上端出现200即表示已经�
 
 发送完成功的请求之后，Jenkins会出现构建任务，表示已经完成了构建。
 ![](./docs/imgs/Jenkins-gitlab-config4.png)
+
+---
 
 ## 四. 总结
 
