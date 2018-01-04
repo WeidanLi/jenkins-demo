@@ -41,7 +41,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.jingchuan.imopei.eureka.EurekaApplication</mainClass>
+                    <mainClass>cn.liweidan.springcloud.eureka.EurekaApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
