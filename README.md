@@ -1,3 +1,8 @@
+阅读这篇教程，你需要这些东西：
+1. shell基础
+2. git
+3. maven的管理项目之间的关系
+
 该项目演示通过gitlab、Jenkins、maven、docker实现自动部署。
 
 具体步骤如下：
